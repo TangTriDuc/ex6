@@ -1,25 +1,96 @@
-import logo from './logo.svg';
-import './App.css';
+// import logo from './logo.svg';
+// import './App.css';
 
-function App() {
+// function App() {
+//   return (
+//     <div className="App">
+//       <header className="App-header">
+//         <img src={logo} className="App-logo" alt="logo" />
+//         <p>
+//           Edit <code>src/App.js</code> and save to reload.
+//         </p>
+//         <a
+//           className="App-link"
+//           href="https://reactjs.org"
+//           target="_blank"
+//           rel="noopener noreferrer"
+//         >
+//           Learn React
+//         </a>
+//       </header>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+// Ex7
+
+import "typeface-robot";
+import React, {useState } from "react";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemtext";
+import {BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import First from "./First";
+import Second from "./Second";
+import Third from "./Third";
+import { type } from "@testing-library/user-event/dist/type";
+
+export default function App({links}) {
+    const [open, setOpen] = useState(false);
+
+    function toggleDrawer ({type, key})
+        if (type == "keydown" && (key == "Tab" || key == "Shift")) {
+            return;
+        }
+
+        setOpen(!open);
+    }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <Router>
+        <Button onClick={toggleDrawer}>Open nav</Button>
+            <section>
+                <Route path="/first" component={First} />
+                <Route path="/second" component={second} />
+                <Route path="/third" component={third} />                  
+            </section>
 
-export default App;
+            <Drawer open={open} onClose={toggleDrawer}>
+                <div 
+                    style={{width: 250 }}
+                    role="presentation"
+                    onClick={toggleDrawer}
+                    onKeyDown={toggleDrawer}
+                >
+
+                    <List>
+                        {links.map((link) => (
+                            <ListItem button key={link.url} component={Link} to={link.url}>
+                                <Switch>
+                                    <Route
+                                        exact
+                                        path={link.url}
+                                        render={() => (
+                                            <ListItemText
+                                                primary={link.name}
+                                                primaryTypographyProps={{color: "primary" }}
+                                            />
+                                        )}
+                                    />
+
+                                    <Route
+                                            path="/"
+                                            render={() => <ListItemText primary={link.name} />}
+                                    />                                        
+                                </Switch>
+                            </ListItem>
+                        ))}
+                    </List>
+                </div>
+            </Drawer>
+    </Router>
+  );
